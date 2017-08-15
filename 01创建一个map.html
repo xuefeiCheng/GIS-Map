@@ -14,6 +14,19 @@
 		<![endif]-->
 		<link rel="stylesheet" href="dist/mobile.css" />
 		<link rel="stylesheet" href="dist/locate.css" />
+		
+
+  <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" rel="stylesheet">
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="dist/leaflet.awesome-markers.css">
+
+<!--  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />-->
+  <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+  <![endif]-->
+
+  <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+  <script src="dist/leaflet.awesome-markers.js"></script>
 
 		<script src="dist/leaflet.js"></script>
 		<script src="dist/proj4js-compressed.js"></script>
@@ -22,11 +35,25 @@
 	</head>
 
 	<body>
-		<div id="map"></div>
-	<script type="text/javascript">
-
-	    var url_google = 'C:/Users/Administrator/Desktop/11111/{z}/{x}/{y}.png';
-	    var glayer_google = new L.TileLayer(url_google, { maxZoom: 16, attribution: 'Google普通地图' });
+<!--		<div id="map"></div>
+		<script type="text/javascript">
+		var obj = [{
+			id:1,
+			name:"huahua",
+			sex:"男"
+		},{
+			id:2,
+			name:"huahua",
+			sex:"男"
+		},{
+			id:3,
+			name:"huahua",
+			sex:"男"
+		}];
+	  	/*var url_google = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png';*/
+	  	var url_google = 'tile/{z}/{x}/{y}.png';
+	  	
+	    var glayer_google = new L.TileLayer(url_google, { maxZoom: 9, attribution: 'Google普通地图' });
 
 	    var url_google_satelite = 'http://localhost:8844/47626774/{z}/{x}/{y}';
 	    var glayer_google_satelite = new L.TileLayer(url_google_satelite, { maxZoom: 18, attribution: 'Google卫星地图' });
@@ -37,9 +64,9 @@
 	    var url_amap_satelite = 'http://localhost:8844/1542757547/{z}/{x}/{y}';
 	    var glayer_amap_satelite = new L.TileLayer(url_amap_satelite, { maxZoom: 18, attribution: '高德卫星地图' });
 
-		var latlng = new L.LatLng(36.559420,116.801480);
+		var latlng = new L.LatLng(36.589620,117);
 
-		var map = new L.Map('map', { center: latlng, zoom: 14, layers: [glayer_google] });
+		var map = new L.Map('map', { center: latlng, zoom: 8, layers: [glayer_google] });
 
 		var baseLayers =
 		{
@@ -53,9 +80,16 @@
 			
 		var marker = new L.Marker(latlng);
 		map.addLayer(marker);
-		marker.bindPopup("<p>这是南京中心坐标;</p>").openPopup();
+		marker.bindPopup("<p>这是"+obj[0].name+"家</p>").openPopup();
 		
-		L.control.locate({
+		// add a marker in the given location, attach some popup content to it and open the popup
+		//L.marker([36.563610,116.800160]).addTo(map).bindPopup('游泳馆').openPopup();
+		
+		// Add markers to map
+ 		L.marker([36.589620,116.802521]).addTo(map);
+ 		L.marker([36.559770,116.811190]).addTo(map).bindPopup("<p>齐鲁工业大学</p>").openPopup();
+  
+    L.control.locate({
 		position: 'topleft',  // set the location of the control
 		drawCircle: false,     // controls whether a circle is drawn that shows the uncertainty about the location
 		follow: false,    // follow the location if `watch` and `setView` are set to true in locateOptions
@@ -68,7 +102,44 @@
 		setView: true,     // automatically sets the map view to the user's location
 		locateOptions: {}  // define location options e.g enableHighAccuracy: true
 	    }).addTo(map);
-    </script>
+    </script>-->
+		
+		 <div id="map"></div>
+        <script type="text/javascript">
+            var osmUrl = 'tile/{z}/{x}/{y}.png',
+                osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                osm = L.tileLayer(osmUrl, {
+                    minZoom: 8,
+                    maxZoom: 9,
+                    attribution: osmAttrib
+                });
+
+            var map = L.map('map')
+                .setView([36.589620,117], 8)
+                .addLayer(osm);
+
+            L.marker([36.559770,116.811190]).addTo(map)
+                .bindPopup("<b>Hello !</b><br />Here is 齐鲁工业大学").openPopup();
+
+            L.circle([36.559770,116.811190], 5000, {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5
+            }).addTo(map).bindPopup("I am a circle.");
+
+
+ 			L.marker([36.689850,117.127680]).addTo(map)
+                .bindPopup("<b>Hello !</b><br />Here is 茗筑美嘉,my home").openPopup();
+            var popup = L.popup();
+
+            function onMapClick(e) {
+                popup
+                    .setLatLng(e.latlng)
+                    .setContent("You clicked the map at " + e.latlng.toString())
+                    .openOn(map);
+            }
+            //map.on('click', onMapClick);
+        </script>
 	</body>
 
 </html>

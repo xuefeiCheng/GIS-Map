@@ -74,11 +74,11 @@
                   var myChart = echarts.init(document.getElementById('marker' + val.id));
                   // 指定图表的配置项和数据
                   option = {
-    title : {
+    /*title : {
         text: '某站点用户访问来源',
         subtext: '纯属虚构',
         x:'center'
-    },
+    },*/
     tooltip : {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -86,7 +86,7 @@
     legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+       // data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
     },
     series : [
         {

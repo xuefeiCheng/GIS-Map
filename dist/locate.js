@@ -194,7 +194,8 @@ L.Control.Legend = L.Control.extend({
         var legendimg = document.createElement('img');
         legendimg.id = 'leaflet-control-clegend';
         legendimg.type = 'img';
-        legendimg.src = "dist/images/markers-matte.png";
+        legendimg.style = 'height:200px;width:300px';
+        legendimg.src = "dist/images/更新.jpg";
         this._legendimg = legendimg;
         //创建一个关闭控件的按钮
         var closebutton = document.createElement('a');

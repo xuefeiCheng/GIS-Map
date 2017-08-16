@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>在popup中添加图表信息</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="dist/leaflet.css" />
+		<!--[if lte IE 8]>
+		<link rel="stylesheet" href="dist/leaflet-ie.css" />
+		<link rel="stylesheet" href="dist/locate-ie.css"/>
+		<![endif]-->
+		<link rel="stylesheet" href="dist/mobile.css" />
+		<link rel="stylesheet" href="dist/locate.css" />
+
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" rel="stylesheet">
+		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="dist/leaflet.awesome-markers.css">
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+		<!--  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />-->
+		<!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+  <![endif]-->
+
+		<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+		<script src="dist/leaflet.awesome-markers.js"></script>
+
+		<script src="dist/leaflet.js"></script>
+		<script src="dist/proj4js-compressed.js"></script>
+		<script src="dist/proj4leaflet.js"></script>
+		<script src="dist/locate.js"></script>
+		<script src="dist/echars/echarts.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="bootstrap/js/bootstrap.min.js"></script>
+
+		<style type="text/css">
+			.modal-dialog {
+				left: 0;
+			}
+		</style>
+	</head>
+
+	<body onload="geoFindMe()">
+		<div id="map"></div>
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+						<h4 class="modal-title" id="myModalLabel">
+					查看当前数据
+				</h4>
+					</div>
+					<div class="modal-body">
+						在这里添加一些文本
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+			<script type="text/javascript">
+			//验证浏览器 是否 含有定位 服务，有 则返回当前位置 坐标
+			function geoFindMe() {
+				if(navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(success, error, geoOptions);
+				} else {
+					console.log("Geolocation services are not supported by your web browser.");
+				}
+			}
+
+			function success(position) {
+				var latitude = position.coords.latitude;
+				var longitude = position.coords.longitude;
+				var altitude = position.coords.altitude;
+				var accuracy = position.coords.accuracy;
+				console.log("lat: " + latitude + " long: " + longitude);
+			}
+
+			function error(error) {
+				console.log("Unable to retrieve your location due to " + error.code + ": " + error.message);
+			}
+
+			var geoOptions = {
+				enableHighAccuracy: true,
+				maximumAge: 30000,
+				timeout: 27000
+			};
+
+			
+				var osmUrl = 'tile/{z}/{x}/{y}.png',
+					osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+					osm = L.tileLayer(osmUrl, {
+						minZoom: 8,
+						maxZoom: 9,
+						attribution: osmAttrib
+					});
+
+				var map = L.map('map')
+					.setView([36.589620, 117], 8)
+					.addLayer(osm);
+				//当前位置
+
+				L.marker([36.666464999999995, 117.07644099999999], { title: '当前位置' }).addTo(map)
+					.bindPopup("<b>这是现在所处的位置</b>").openPopup();
+				L.marker([36.559770, 116.811190], { title: '齐鲁工业大学' }).addTo(map)
+					.bindPopup("<b>Hello !</b><br />Here is 齐鲁工业大学").openPopup();
+				L.marker([37.692640, 117.460320], { title: '我的家' }).addTo(map)
+					.bindPopup("Here is 和睦程村").openPopup();
+
+				//在popup中添加 图表信息
+				var val = {
+					id: 1,
+					location: [36.559770, 116.9602]
+				}
+				//定义marker
+				var marker = L.marker(val.location).addTo(map);
+				marker.on('click', function(e) {
+					$('#myModal').modal({
+						keyboard: true
+					});
+				});
+				L.circle([36.559770, 116.811190], 5000, {
+					color: 'red',
+					fillColor: '#f03',
+					fillOpacity: 0.5
+				}).addTo(map).bindPopup("I am a circle.");
+
+				L.marker([36.689850, 117.127680]).addTo(map)
+					.bindPopup("<div id ='clickT'><p>茗筑美嘉</P></div>").openPopup();
+
+				$("#clickT").click(function() {
+					alert("点击我了");
+				});
+				var popup = L.popup();
+
+				function onMapClick(e) {
+					popup
+						.setLatLng(e.latlng)
+						.setContent("You clicked the map at " + e.latlng.toString())
+						.openOn(map);
+				}
+				map.on('click', onMapClick);
+				L.control.Legend({
+					position: 'topright' // set the location of the contro
+				}).addTo(map);
+				//定位 服务
+				L.control.locate({
+					/*Position	描述
+					'topleft'	地图的左上角。
+					'topright'	地图的右上角。
+					'bottomleft'地图的左下角。
+					'bottomright'地图的右下角。*/
+					position: 'topleft', // set the location of the control
+					drawCircle: false, // controls whether a circle is drawn that shows the uncertainty about the location
+					follow: false, // follow the location if `watch` and `setView` are set to true in locateOptions
+					circleStyle: {}, // change the style of the circle around the user's location
+					markerStyle: {},
+					metric: true, // use metric or imperial units
+					onLocationError: function(err) { alert(err.message) }, // define an error callback function
+					title: "Show me where I am", // title of the locat control
+					popupText: ["You are within ", " from this point"], // text to appear if user clicks on circle
+					setView: true, // automatically sets the map view to the user's location
+					locateOptions: {} // define location options e.g enableHighAccuracy: true
+				}).addTo(map);
+
+			</script>
+	</body>
+
+</html>

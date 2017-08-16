@@ -15,7 +15,6 @@
 		<link rel="stylesheet" href="dist/mobile.css" />
 		<link rel="stylesheet" href="dist/locate.css" />
 
-
 		<!--  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />-->
 		<!--[if lte IE 8]>
       <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
@@ -29,12 +28,18 @@
 		<script src="dist/proj4leaflet.js"></script>
 		<script src="dist/locate.js"></script>
 		<script src="dist/echars/echarts.min.js"></script>
+		<style type="text/css">
+			.chart {
+				width: 500px;
+				height: 300px;
+				background-color: white;
+			}
+		</style>
 	</head>
 
 	<body>
 		<div id="map"></div>
 		<script type="text/javascript">
-
 			var osmUrl = 'tile/{z}/{x}/{y}.png',
 				osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 				osm = L.tileLayer(osmUrl, {
@@ -54,14 +59,68 @@
 				fillColor: '#f03',
 				fillOpacity: 0.5
 			}).addTo(map).bindPopup("I am a circle.");
-			
-			
-			L.marker([37.692640,117.460320], { title: '我的家' }).addTo(map)
-				.bindPopup("Here is 和睦程村").openPopup();				
-		
+
+			L.marker([37.692640, 117.460320], { title: '我的家' }).addTo(map)
+				.bindPopup("Here is 和睦程村").openPopup();
+
 			L.marker([36.689850, 117.127680]).addTo(map)
 				.bindPopup("<b>Hello !</b><br />Here is 茗筑美嘉,my home").openPopup();
 
+			var chart = L.control({ position: 'bottomright' });
+			chart.onAdd = function(map) {
+				var div = L.DomUtil.create('div', 'info chart');
+				div.id = "chatrdemo";
+				return div;
+			};
+			chart.addTo(map);
+			// 基于准备好的dom，初始化echarts实例
+			var myChart = echarts.init(document.getElementById('chatrdemo'));
+			// 指定图表的配置项和数据
+			option = {
+				tooltip: {
+					trigger: 'axis'
+				},
+				xAxis: [{
+					type: 'category',
+					data: ['1月', '2月', '3月', '4月']
+				}],
+				yAxis: [{
+					type: 'value',
+					name: '水量',
+					min: 0,
+					max: 50,
+					interval: 50,
+					axisLabel: {
+						formatter: '{value} ml'
+					}
+				}, {
+					type: 'value',
+					name: '温度',
+					min: 0,
+					max: 10,
+					interval: 5,
+					axisLabel: {
+						formatter: '{value} °C'
+					}
+				}],
+				series: [{
+					name: '蒸发量',
+					type: 'bar',
+					data: [2.0, 4.9, 7.0, 23.2]
+				}, {
+					name: '降水量',
+					type: 'bar',
+					data: [2.6, 5.9, 9.0, 26.4]
+				}, {
+					name: '平均温度',
+					type: 'line',
+					yAxisIndex: 1,
+					data: [2.0, 2.2, 3.3, 4.5]
+				}]
+			};
+
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option);
 		</script>
 	</body>
 

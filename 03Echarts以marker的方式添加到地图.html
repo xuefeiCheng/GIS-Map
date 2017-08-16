@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>echarts以marker的方式添加到地图</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="dist/leaflet.css" />
+		<!--[if lte IE 8]>
+		<link rel="stylesheet" href="dist/leaflet-ie.css" />
+		<link rel="stylesheet" href="dist/locate-ie.css"/>
+		<![endif]-->
+		<link rel="stylesheet" href="dist/mobile.css" />
+		<link rel="stylesheet" href="dist/locate.css" />
+
+
+		<!--  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />-->
+		<!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+  <![endif]-->
+
+		<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+		<script src="dist/leaflet.awesome-markers.js"></script>
+
+		<script src="dist/leaflet.js"></script>
+		<script src="dist/proj4js-compressed.js"></script>
+		<script src="dist/proj4leaflet.js"></script>
+		<script src="dist/locate.js"></script>
+		<script src="dist/echars/echarts.min.js"></script>
+	</head>
+
+	<body>
+		<div id="map"></div>
+		<script type="text/javascript">
+
+			var osmUrl = 'tile/{z}/{x}/{y}.png',
+				osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+				osm = L.tileLayer(osmUrl, {
+					minZoom: 8,
+					maxZoom: 9,
+					attribution: osmAttrib
+				});
+
+			var map = L.map('map')
+				.setView([36.589620, 117], 8)
+				.addLayer(osm);
+
+			L.marker([36.559770, 116.811190], { title: '齐鲁工业大学' }).addTo(map)
+				.bindPopup("<b>Hello !</b><br />Here is 齐鲁工业大学").openPopup()
+			L.circle([36.559770, 116.811190], 5000, {
+				color: 'red',
+				fillColor: '#f03',
+				fillOpacity: 0.5
+			}).addTo(map).bindPopup("I am a circle.");
+			
+			
+			L.marker([37.692640,117.460320], { title: '我的家' }).addTo(map)
+				.bindPopup("Here is 和睦程村").openPopup();				
+		
+			L.marker([36.689850, 117.127680]).addTo(map)
+				.bindPopup("<b>Hello !</b><br />Here is 茗筑美嘉,my home").openPopup();
+
+		</script>
+	</body>
+
+</html>

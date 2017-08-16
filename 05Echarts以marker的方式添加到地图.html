@@ -28,13 +28,6 @@
 		<script src="dist/proj4leaflet.js"></script>
 		<script src="dist/locate.js"></script>
 		<script src="dist/echars/echarts.min.js"></script>
-		<style type="text/css">
-			.chart {
-				width: 500px;
-				height: 300px;
-				background-color: white;
-			}
-		</style>
 	</head>
 
 	<body>
@@ -66,61 +59,61 @@
 			L.marker([36.689850, 117.127680]).addTo(map)
 				.bindPopup("<b>Hello !</b><br />Here is 茗筑美嘉,my home").openPopup();
 
-			var chart = L.control({ position: 'bottomright' });
-			chart.onAdd = function(map) {
-				var div = L.DomUtil.create('div', 'info chart');
-				div.id = "chatrdemo";
-				return div;
-			};
-			chart.addTo(map);
-			// 基于准备好的dom，初始化echarts实例
-			var myChart = echarts.init(document.getElementById('chatrdemo'));
-			// 指定图表的配置项和数据
-			option = {
-				tooltip: {
-					trigger: 'axis'
-				},
-				xAxis: [{
-					type: 'category',
-					data: ['1月', '2月', '3月', '4月']
-				}],
-				yAxis: [{
-					type: 'value',
-					name: '水量',
-					min: 0,
-					max: 50,
-					interval: 50,
-					axisLabel: {
-						formatter: '{value} ml'
-					}
-				}, {
-					type: 'value',
-					name: '温度',
-					min: 0,
-					max: 10,
-					interval: 5,
-					axisLabel: {
-						formatter: '{value} °C'
-					}
-				}],
-				series: [{
-					name: '蒸发量',
-					type: 'bar',
-					data: [2.0, 4.9, 7.0, 23.2]
-				}, {
-					name: '降水量',
-					type: 'bar',
-					data: [2.6, 5.9, 9.0, 26.4]
-				}, {
-					name: '平均温度',
-					type: 'line',
-					yAxisIndex: 1,
-					data: [2.0, 2.2, 3.3, 4.5]
-				}]
-			};
+			var val ={
+				id:1,
+				location:[37.473420,121.458330]
+			}
+			var pictures = L.marker(val.location, {
+                      icon: L.divIcon({
+                          className: 'leaflet-echart-icon',
+                          iconSize: [160, 160],
+                          html: '<div id="marker' + val.id + '" style="width: 300px; height: 300px; position: relative; background-color: transparent;">asd</div>'
+                      })
+                  }).addTo(map);
+                  // 基于准备好的dom，初始化echarts实例
+                  var myChart = echarts.init(document.getElementById('marker' + val.id));
+                  // 指定图表的配置项和数据
+                  option = {
+    title : {
+        text: '某站点用户访问来源',
+        subtext: '纯属虚构',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+    },
+    series : [
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:[
+                {value:335, name:'直接访问'},
+                {value:310, name:'邮件营销'},
+                {value:234, name:'联盟广告'},
+                {value:135, name:'视频广告'},
+                {value:1548, name:'搜索引擎'}
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
 
-			// 使用刚指定的配置项和数据显示图表。
-			myChart.setOption(option);
+                  // 使用刚指定的配置项和数据显示图表。
+                  myChart.setOption(option);
 		</script>
 	</body>
 

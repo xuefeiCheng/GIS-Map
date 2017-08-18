@@ -99,13 +99,13 @@
 				var osmUrl = 'tile/{z}/{x}/{y}.png',
 					osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 					osm = L.tileLayer(osmUrl, {
-						minZoom: 8,
-						maxZoom: 9,
+						minZoom: 15,
+						maxZoom: 16,
 						attribution: osmAttrib
 					});
 
 				var map = L.map('map')
-					.setView([36.589620, 117], 8)
+					.setView([36.666464999999995, 117.07644099999999], 15)
 					.addLayer(osm);
 				//当前位置
 
@@ -136,6 +136,8 @@
 
 				L.marker([36.689850, 117.127680]).addTo(map)
 					.bindPopup("<div id ='clickT'><p>茗筑美嘉</P></div>").openPopup();
+					//marker的mouseover事件
+					//.on('mouseover', function(){$('#myModal').modal({keyboard: true});})
 
 				$("#clickT").click(function() {
 					alert("点击我了");

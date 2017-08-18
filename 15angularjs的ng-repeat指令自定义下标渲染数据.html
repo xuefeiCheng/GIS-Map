@@ -1,10 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myapp">
+
 	<head>
 		<meta charset="UTF-8">
 		<title>ng-repeat自定义下标渲染数据</title>
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+		<!--angularjs-->
+		<script src="js/angular.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="bootstrap/js/bootstrap.min.js"></script>
+		<style>
+			.text {
+				width: 888px;
+				margin: 100px auto;
+			}
+		</style>
 	</head>
-	<body>
-		<p>ng-repeat能够设置从下标是1的开始循环，有的时候我不需要第一数据，从第二个开始取。这怎么取？</p>
+
+	<body ng-controller="myCtrl">
+		<div class="text">
+			<blockquote>
+				{{name}}
+				<small>Someone famous in <cite title="programmer">programmer</cite></small>
+			</blockquote>
+			<p>ng-repeat能够设置从下标是1的开始循环，有的时候我不需要第一数据，从第二个开始取。这怎么取？</p>
+			<h3>遍历1  <small>全部遍历</small></h3>
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat='li in dataLibrary'>
+					<h5>{{li.name}}<small>,from {{li.city}}</small></h5>
+				</li>
+			</ul>
+			<h3>遍历2  <small>下标自定义，利用filter</small></h3>
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat='li in dataLibrary | startFrom:3'>
+					<h5>{{li.name}}<small>,from {{li.city}}</small></h5>
+				</li>
+			</ul>
+		</div>
+
+		<script>
+			var app = angular.module('myapp', []);
+			//过滤器
+			app.filter('startFrom', function() {
+				return function(input, start) {
+					if(input) {
+						start = +start; //parse to int
+						return input.slice(start);
+					}
+					return [];
+				}
+			});
+			app.controller('myCtrl', function($scope, $http) {
+				//测试
+				$scope.name = "xuefeicheng";
+				//data
+				$scope.dataLibrary = [{
+					'id': 0,
+					'name': "Joy",
+					'city': "BeiJing",
+					'adress': "411027"
+				}, {
+					'id': 1,
+					'name': "Sachin",
+					'city': "BeiJing",
+					'adress': "411027"
+				}, {
+					'id': 2,
+					'name': "Tanmay",
+					'city': "Mumbai",
+					'adress': "411027"
+				}, {
+					'id': 3,
+					'name': "July",
+					'city': "Bangalore",
+					'adress': "400003"
+				}, {
+					'id': 4,
+					'name': "Uma",
+					'city': "BeiJing",
+					'adress': "411027"
+				}];
+			});
+		</script>
 	</body>
+
 </html>

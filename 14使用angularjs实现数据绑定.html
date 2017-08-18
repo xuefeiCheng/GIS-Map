@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myapp">
 
 	<head>
 		<meta charset="UTF-8">
@@ -26,7 +26,8 @@
 
 		<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
 		<script src="dist/leaflet.awesome-markers.js"></script>
-
+		<!--angularjs-->
+		<script src="js/angular.min.js"></script>
 		<script src="dist/leaflet.js"></script>
 		<script src="dist/proj4js-compressed.js"></script>
 		<script src="dist/proj4leaflet.js"></script>
@@ -45,14 +46,16 @@
 	<body>
 		<div id="map"></div>
 		<!-- 模态框（Modal） -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="myCtrl">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-header">
+					<div class="modal-header" style="padding-bottom: 0;">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="wannaTitle">
-							
-						</h4>
+						<h4 class="modal-title" id="wannaTitle"></h4>
+						<blockquote class="pull-right">
+							{{name}}
+							<small>Someone famous in <cite title="programmer">programmer</cite></small>
+						</blockquote>
 					</div>
 					<div class="modal-body" style="padding: 0;">
 						<table class="table table-bordered" style="margin-bottom:0">
@@ -63,15 +66,13 @@
 									<th width="30%">邮编</th>
 								</tr>
 							</thead>
-							<div class="panel panel-default">
-								<tbody class="panel-heading">
-									<tr id="wannwOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="cursor: pointer;" class="warning">
+							<tbody class="panel-heading">
+								<tr id="wannwOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="cursor: pointer;" class="warning">
 										<!--<td>joy</td>
 										<td>BeiJing</td>
 										<td>560001</td>-->
-									</tr>
-								</tbody>
-							</div>
+								</tr>
+							</tbody>
 						</table>
 						<!--默认展开 增添class  in-->
 						<div id="collapseOne" class="panel-collapse collapse ">
@@ -107,6 +108,13 @@
 				<!-- /.modal-content -->
 			</div>
 			<!-- /.modal -->
+			<script>
+				var app = angular.module('myapp', []);
+				app.controller('myCtrl', function($scope, $http) {
+					//测试
+					$scope.name = "xuefeicheng";
+				});
+			</script>
 			<script type="text/javascript">
 				var osmUrl = 'tile/{z}/{x}/{y}.png',
 					osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -239,7 +247,7 @@
 					'adress': "411027"
 				}];
 
-				function showData(title,value) {
+				function showData(title, value) {
 					var dataNow = loadDate(value);
 					$("#wannaTitle").html(title);
 					$("#wannwOne").append('<td>' + dataNow[0].name + '</td><td>' + dataNow[0].city + '</td><td>' + dataNow[0].adress + '</td>');
@@ -255,7 +263,7 @@
 					$("#wannaOthers").children('tr').remove();
 				}
 
-				function loadDate(value){
+				function loadDate(value) {
 					var data;
 					switch(value) {
 						case 0:

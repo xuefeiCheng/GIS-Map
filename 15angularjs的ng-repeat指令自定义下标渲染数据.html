@@ -36,6 +36,12 @@
 					<h5>{{li.name}}<small>,from {{li.city}}</small></h5>
 				</li>
 			</ul>
+			<h3>遍历3  <small>下标自定义，利用$index和ng-if结合</small></h3>
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat='li in dataLibrary' ng-if="$index>2">
+					<h5>{{li.name}}<small>,from {{li.city}}</small></h5>
+				</li>
+			</ul>
 		</div>
 
 		<script>

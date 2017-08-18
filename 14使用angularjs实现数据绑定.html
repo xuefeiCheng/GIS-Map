@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>在popup中添加图表信息</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="dist/leaflet.css" />
+		<!--[if lte IE 8]>
+		<link rel="stylesheet" href="dist/leaflet-ie.css" />
+		<link rel="stylesheet" href="dist/locate-ie.css"/>
+		<![endif]-->
+		<link rel="stylesheet" href="dist/mobile.css" />
+		<link rel="stylesheet" href="dist/locate.css" />
+
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" rel="stylesheet">
+		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="dist/leaflet.awesome-markers.css">
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+		<!--  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />-->
+		<!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+  <![endif]-->
+
+		<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+		<script src="dist/leaflet.awesome-markers.js"></script>
+
+		<script src="dist/leaflet.js"></script>
+		<script src="dist/proj4js-compressed.js"></script>
+		<script src="dist/proj4leaflet.js"></script>
+		<script src="dist/locate.js"></script>
+		<script src="dist/echars/echarts.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="bootstrap/js/bootstrap.min.js"></script>
+
+		<style type="text/css">
+			.modal-dialog {
+				left: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="map"></div>
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="wannaTitle">
+							
+						</h4>
+					</div>
+					<div class="modal-body" style="padding: 0;">
+						<table class="table table-bordered" style="margin-bottom:0">
+							<thead>
+								<tr>
+									<th width="30%">名称</th>
+									<th width="40%">城市</th>
+									<th width="30%">邮编</th>
+								</tr>
+							</thead>
+							<div class="panel panel-default">
+								<tbody class="panel-heading">
+									<tr id="wannwOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style="cursor: pointer;" class="warning">
+										<!--<td>joy</td>
+										<td>BeiJing</td>
+										<td>560001</td>-->
+									</tr>
+								</tbody>
+							</div>
+						</table>
+						<!--默认展开 增添class  in-->
+						<div id="collapseOne" class="panel-collapse collapse ">
+							<div class="panel-body" style="padding: 0;">
+								<table class="table table-bordered" style="margin-bottom:0">
+									<tbody id="wannaOthers">
+										<!--<tr>
+													<td width="30%">Tanmay</td>
+													<td width="40%">Bangalore</td>
+													<td width="30%">560001</td>
+												</tr>
+												<tr>
+													<td>Sachin</td>
+													<td>Mumbai</td>
+													<td>400003</td>
+												</tr>
+												<tr>
+													<td>Uma</td>
+													<td>Pune</td>
+													<td>411027</td>
+												</tr>-->
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+			<script type="text/javascript">
+				var osmUrl = 'tile/{z}/{x}/{y}.png',
+					osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+					osm = L.tileLayer(osmUrl, {
+						minZoom: 15,
+						maxZoom: 16,
+						attribution: osmAttrib
+					});
+				//中心位置
+				var map = L.map('map')
+					.setView([36.559420, 116.801480], 15)
+					.addLayer(osm);
+				//图书馆  36.559180,116.800490
+				//教学楼1  36.559000,116.803500 
+				//教学楼2 36.558570,116.803710
+				//行政楼  36.556610,116.798730
+				//体育场  36.563970,116.805090
+				//篮球场  36.562840,116.799910
+				//浴室   36.563890,116.800470
+				//游泳馆  36.563610,116.800160
+				var markers = [{
+					'id': 0,
+					'loc': [36.559180, 116.800490],
+					'title': "图书馆"
+				}, {
+					'id': 1,
+					'loc': [36.559000, 116.803500],
+					'title': "教学楼1"
+				}, {
+					'id': 2,
+					'loc': [36.55584, 116.79877],
+					'title': "行政楼"
+				}, {
+					'id': 3,
+					'loc': [36.563610, 116.800160],
+					'title': "游泳馆"
+				}, {
+					'id': 4,
+					'loc': [36.563970, 116.805090],
+					'title': "体育场"
+				}, {
+					'id': 5,
+					'loc': [36.56282, 116.79941],
+					'title': "篮球场"
+				}, {
+					'id': 6,
+					'loc': [36.56267, 116.80138],
+					'title': "足球场"
+				}, {
+					'id': 7,
+					'loc': [36.56182, 116.79939],
+					'title': "后勤楼"
+				}];
+				var dataLibrary = [{
+					'id': 0,
+					'name': "Joy",
+					'city': "BeiJing",
+					'adress': "411027"
+				}, {
+					'id': 1,
+					'name': "Sachin",
+					'city': "BeiJing",
+					'adress': "411027"
+				}, {
+					'id': 2,
+					'name': "Tanmay",
+					'city': "Mumbai",
+					'adress': "411027"
+				}, {
+					'id': 3,
+					'name': "July",
+					'city': "Bangalore",
+					'adress': "400003"
+				}, {
+					'id': 4,
+					'name': "Uma",
+					'city': "BeiJing",
+					'adress': "411027"
+				}];
+				var dataSwim = [{
+					'id': 0,
+					'name': "joy1",
+					'city': "BeiJing",
+					'adress': "411027"
+				}, {
+					'id': 1,
+					'name': "Sachin1",
+					'city': "BeiJing",
+					'adress': "411027"
+				}, {
+					'id': 2,
+					'name': "Tanmay1",
+					'city': "Mumbai",
+					'adress': "411027"
+				}, {
+					'id': 3,
+					'name': "July1",
+					'city': "Bangalore",
+					'adress': "400003"
+				}, {
+					'id': 4,
+					'name': "Uma1",
+					'city': "BeiJing",
+					'adress': "411027"
+				}];
+				var dataFootball = [{
+					'id': 0,
+					'name': "joy2",
+					'city': "BeiJing",
+					'adress': "411027"
+				}, {
+					'id': 1,
+					'name': "Sachin2",
+					'city': "BeiJing",
+					'adress': "411027"
+				}, {
+					'id': 2,
+					'name': "Tanmay2",
+					'city': "Mumbai",
+					'adress': "411027"
+				}, {
+					'id': 3,
+					'name': "July2",
+					'city': "Bangalore",
+					'adress': "400003"
+				}, {
+					'id': 4,
+					'name': "Uma2",
+					'city': "BeiJing",
+					'adress': "411027"
+				}];
+
+				function showData(title,value) {
+					var dataNow = loadDate(value);
+					$("#wannaTitle").html(title);
+					$("#wannwOne").append('<td>' + dataNow[0].name + '</td><td>' + dataNow[0].city + '</td><td>' + dataNow[0].adress + '</td>');
+					for(var j = 1, l = dataNow.length; j < l; j++) {
+						$("#wannaOthers").append('<tr><td width="30%">' + dataNow[j].name + '</td><td width="40%">' + dataNow[j].city + '</td><td width="30%">' + dataNow[j].adress + '</td></tr>');
+					}
+				}
+
+				function clear() {
+					//panel 默认为关闭状态
+					$("#collapseOne").removeClass("in");
+					$("#wannwOne").children('td').remove();
+					$("#wannaOthers").children('tr').remove();
+				}
+
+				function loadDate(value){
+					var data;
+					switch(value) {
+						case 0:
+							data = dataLibrary;
+							break;
+						case 3:
+							data = dataSwim;
+							break;
+						case 6:
+							data = dataFootball;
+							break;
+						default:
+							data = [{
+								'id': 0,
+								'name': "default",
+								'city': "default",
+								'adress': "default"
+							}];
+					}
+					return data;
+				}
+				for(var i = 0, le = markers.length; i < le; i++) {
+					//给 marker 添加属性 ，把value添加进去 方便后面取 id 根据id获得数据
+					L.marker(markers[i].loc, { title: markers[i].title, value: markers[i].id }).addTo(map)
+						.on('mouseover', function() {
+							this.bindPopup("<b>" + this.options.title + "</b>").openPopup();
+						})
+						.on('click', function() {
+							clear();
+							//查看该marker 的属性 主要是看options中是否有value值  进行验证
+							//console.log(this);
+							//验证 函数 是否根据 value 返回特定数据
+							//loadDate(this.options.value);
+							showData(this.options.title, this.options.value);
+							$('#myModal').modal({
+								keyboard: true
+							});
+						});
+				}
+				L.circle([36.559180, 116.800490], 20, {
+					color: 'red',
+					fillColor: '#f03',
+					fillOpacity: 0.5
+				}).addTo(map);
+				var popup = L.popup();
+
+				function onMapClick(e) {
+					popup
+						.setLatLng(e.latlng)
+						.setContent("当前位置坐标为" + e.latlng.toString())
+						.openOn(map);
+				}
+				map.on('click', onMapClick);
+				//定位 服务
+				L.control.locate({
+					/*Position	描述
+					'topleft'	地图的左上角。
+					'topright'	地图的右上角。
+					'bottomleft'地图的左下角。
+					'bottomright'地图的右下角。*/
+					position: 'topleft', // set the location of the control
+					drawCircle: false, // controls whether a circle is drawn that shows the uncertainty about the location
+					follow: false, // follow the location if `watch` and `setView` are set to true in locateOptions
+					circleStyle: {}, // change the style of the circle around the user's location
+					markerStyle: {},
+					metric: true, // use metric or imperial units
+					onLocationError: function(err) { alert(err.message) }, // define an error callback function
+					title: "Show me where I am", // title of the locat control
+					popupText: ["You are within ", " from this point"], // text to appear if user clicks on circle
+					setView: true, // automatically sets the map view to the user's location
+					locateOptions: {} // define location options e.g enableHighAccuracy: true
+				}).addTo(map);
+			</script>
+	</body>
+
+</html>

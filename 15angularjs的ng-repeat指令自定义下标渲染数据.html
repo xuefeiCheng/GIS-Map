@@ -42,6 +42,13 @@
 					<h5>{{li.name}}<small>,from {{li.city}}</small></h5>
 				</li>
 			</ul>
+			<h3>遍历4  <small>下标自定义，splice([start],end)</small></h3>
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat='li in dataArray'>
+					<h5>{{li.name}}<small>,from {{li.city}}</small></h5>
+				</li>
+			</ul>
+			
 		</div>
 
 		<script>
@@ -86,6 +93,34 @@
 					'city': "BeiJing",
 					'adress': "411027"
 				}];
+				
+				var dataArray= [{
+					'id': 0,
+					'name': "Joy",
+					'city': "BeiJing",
+					'adress': "411027"
+				}, {
+					'id': 1,
+					'name': "Sachin",
+					'city': "BeiJing",
+					'adress': "411027"
+				}, {
+					'id': 2,
+					'name': "Tanmay",
+					'city': "Mumbai",
+					'adress': "411027"
+				}, {
+					'id': 3,
+					'name': "July",
+					'city': "Bangalore",
+					'adress': "400003"
+				}, {
+					'id': 4,
+					'name': "Uma",
+					'city': "BeiJing",
+					'adress': "411027"
+				}];
+				$scope.dataArray = dataArray.splice(3,5);
 			});
 		</script>
 	</body>

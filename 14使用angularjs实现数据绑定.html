@@ -113,8 +113,8 @@
 				app.controller('myCtrl', function($scope, $http) {
 					//测试
 					$scope.name = "xuefeicheng";
-				
-				var osmUrl = 'tile/{z}/{x}/{y}.png',
+				//'http://localhost:8080/788865972/{z}/{x}/{y}''tile/{z}/{x}/{y}.png'
+					var osmUrl = 'tile/{z}/{x}/{y}.png',
 					osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 					osm = L.tileLayer(osmUrl, {
 						minZoom: 15,
@@ -246,9 +246,14 @@
 				}];
 				$scope.wanna = loadDate(0);
 				function showData(title, value) {
-					var dataNow = loadDate(value);
+					$scope.wanna = loadDate(value);
+					//var dataNow = loadDate(value);
 					$("#wannaTitle").html(title);
-					$scope.wanna = dataNow;
+					/*var scope = angular.element(ngSection).scope();
+					scope.$apply(function(){
+						$scope.wanna = dataNow;
+					})*/
+					
 					/*$("#wannwOne").append('<td>' + dataNow[0].name + '</td><td>' + dataNow[0].city + '</td><td>' + dataNow[0].adress + '</td>');
 					for(var j = 1, l = dataNow.length; j < l; j++) {
 						$("#wannaOthers").append('<tr><td width="30%">' + dataNow[j].name + '</td><td width="40%">' + dataNow[j].city + '</td><td width="30%">' + dataNow[j].adress + '</td></tr>');
@@ -286,27 +291,42 @@
 				}
 				for(var i = 0, le = markers.length; i < le; i++) {
 					//给 marker 添加属性 ，把value添加进去 方便后面取 id 根据id获得数据
-					L.marker(markers[i].loc, { title: markers[i].title, value: markers[i].id }).addTo(map)
+					L.marker(markers[i].loc, { title: markers[i].title, value: markers[i].id}).addTo(map)
 						.on('mouseover', function() {
 							this.bindPopup("<b>" + this.options.title + "</b>").openPopup();
 						})
-						/*.on("mousedown",function(){
-							$scope.wanna = loadDate(this.options.value);
-						})*/
 						.on('click', function() {
 							//click事件之后，调用ajax，将回调的数据赋值给scope下的wanna
 							//现在 失败，只能在 click事件之前，将数据处理好，绑定给scope
-							//clear();
-							//查看该marker 的属性 主要是看options中是否有value值  进行验证
-							//console.log(this);
-							//验证 函数 是否根据 value 返回特定数据
-							//loadDate(this.options.value);
 							//showData(this.options.title, this.options.value);
+							//已经有数据了 就是不绑定在界面中
+							//console.log($scope.wanna);
 							$('#myModal').modal({
 								keyboard: true
 							});
 						});
 				}
+				
+
+				//也可以先获取数据，添加到属性中去
+	/*			for(var i = 0, le = markers.length; i < le; i++) {
+					//给 marker 添加属性 ，把value添加进去 方便后面取 id 根据id获得数据
+					L.marker(markers[i].loc, { title: markers[i].title, data: loadDate(markers[i].id)}).addTo(map)
+						.on('mouseover', function() {
+							this.bindPopup("<b>" + this.options.title + "</b>").openPopup();
+						})
+						.on('click', function() {
+							//click事件之后，调用ajax，将回调的数据赋值给scope下的wanna
+							//现在 失败，只能在 click事件之前，将数据处理好，绑定给scope
+							$scope.wanna = this.options.data;
+							showData(this.options.title, this.options.value);
+							//已经有数据了 就是不绑定在界面中
+							console.log($scope.wanna);
+							$('#myModal').modal({
+								keyboard: true
+							});
+						});
+				}*/
 				L.circle([36.559180, 116.800490], 20, {
 					color: 'red',
 					fillColor: '#f03',
